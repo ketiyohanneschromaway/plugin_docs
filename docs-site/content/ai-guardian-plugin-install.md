@@ -118,7 +118,7 @@ Here is the **complete target state** of `openclaw.json` for everything this gui
 
 ---
 
-### 3.1 Enable plugins
+### 1.4 Enable plugins
 
 Make sure `plugins.enabled` is set to `true`:
 
@@ -129,7 +129,7 @@ Make sure `plugins.enabled` is set to `true`:
 }
 ```
 
-### 3.2 Verify the install entry
+### 1.5 Verify the install entry
 
 Check that `plugins.installs` contains an entry for `ai-guardian-plugin`. It should have been added automatically by the install command:
 
@@ -144,7 +144,7 @@ Check that `plugins.installs` contains an entry for `ai-guardian-plugin`. It sho
 }
 ```
 
-### 3.3 Add to the allow list
+### 1.6 Add to the allow list
 
 In `plugins.allow`, add `"ai-guardian-plugin"`:
 
@@ -154,7 +154,7 @@ In `plugins.allow`, add `"ai-guardian-plugin"`:
 ]
 ```
 
-### 3.4 Register the load path
+### 1.7 Register the load path
 
 Copy the value of `plugins.installs.ai-guardian-plugin.installPath` and add it to `plugins.load.paths`:
 
@@ -168,7 +168,7 @@ Copy the value of `plugins.installs.ai-guardian-plugin.installPath` and add it t
 
 > The path must match exactly what is in `installPath`.
 
-### 3.5 Add the plugin entry
+### 1.8 Add the plugin entry
 
 Under `plugins.entries`, add the following configuration block:
 
@@ -202,7 +202,7 @@ Under `plugins.entries`, add the following configuration block:
 
 > The `chromiaSecretPath` points to the keypair file you created in Step 1. The `~` expands to your home directory automatically on macOS.
 
-### 3.6 Restart the OpenClaw Gateway
+### 1.9 Restart the OpenClaw Gateway
 
 Once all changes are saved, restart the OpenClaw gateway to apply the new plugin configuration:
 
