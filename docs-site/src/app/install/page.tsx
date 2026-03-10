@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import MarkdownRenderer from '@/components/MarkdownRenderer';
+import MiniToc from '@/components/MiniToc';
 
 export default function InstallPage() {
     const filePath = join(process.cwd(), 'content', 'ai-guardian-plugin-install.md');
@@ -20,7 +21,12 @@ export default function InstallPage() {
             </div>
 
             <div className="page-body">
-                <MarkdownRenderer content={content} />
+                <div className="doc-layout">
+                    <article className="doc-article">
+                        <MarkdownRenderer content={content} />
+                    </article>
+                    <MiniToc content={content} />
+                </div>
             </div>
         </>
     );

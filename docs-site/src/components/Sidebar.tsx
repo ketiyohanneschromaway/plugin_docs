@@ -3,20 +3,25 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-const nav = [
+const nav: Array<{
+  label: string;
+  items: Array<{ href: string; label: string; badge?: string }>;
+}> = [
   {
     label: 'Getting Started',
     items: [
-      { href: '/', icon: '🏠', label: 'Overview' },
-      { href: '/install', icon: '🔧', label: 'Installation Guide', badge: 'v0.1.3' },
+      { href: '/', label: 'Overview' },
+      { href: '/install', label: 'Installation Guide', badge: 'v0.1.3' },
     ],
   },
   {
     label: 'Reference',
     items: [
-      { href: '/install#step-1', icon: '🔑', label: 'Keypair Generation' },
-      { href: '/install#step-2', icon: '📦', label: 'Plugin Install' },
-      { href: '/install#step-3', icon: '⚙️', label: 'Configuration' },
+      { href: '/install#prerequisites', label: 'Prerequisites' },
+      { href: '/install#step-1-generate-a-secp256k1-keypair', label: 'Keypair Generation' },
+      { href: '/install#step-2-install-the-plugin', label: 'Plugin Install' },
+      { href: '/install#step-3-configure-openclawjson', label: 'Configuration' },
+      { href: '/install#summary', label: 'Summary' },
     ],
   },
 ];
@@ -44,7 +49,6 @@ export default function Sidebar() {
                 href={item.href}
                 className={pathname === item.href ? 'active' : ''}
               >
-                <span className="nav-icon">{item.icon}</span>
                 {item.label}
                 {item.badge && <span className="sidebar-badge">{item.badge}</span>}
               </Link>

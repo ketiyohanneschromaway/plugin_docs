@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import 'highlight.js/styles/github-dark.css';
 import Sidebar from '@/components/Sidebar';
 
 export const metadata: Metadata = {

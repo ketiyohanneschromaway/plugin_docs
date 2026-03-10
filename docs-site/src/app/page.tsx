@@ -132,7 +132,7 @@ export default function HomePage() {
         </h2>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(2, 1fr)',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
           gap: 16,
         }}>
           {features.map((f) => (
@@ -168,6 +168,7 @@ export default function HomePage() {
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: 20,
+          flexWrap: 'wrap',
         }}>
           <div>
             <div style={{ fontSize: 17, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 6 }}>

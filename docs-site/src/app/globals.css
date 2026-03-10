@@ -145,11 +145,6 @@ body {
   font-weight: 500;
 }
 
-.sidebar-nav a .nav-icon {
-  font-size: 14px;
-  opacity: 0.8;
-}
-
 .sidebar-nav .sub-links {
   padding-left: 28px;
   margin-top: 2px;
@@ -221,10 +216,64 @@ body {
   border-radius: 20px;
 }
 
-/* ── Page body ── */
+
 .page-body {
-  padding: 48px 40px 80px;
-  max-width: calc(var(--content-max) + 80px);
+  padding: 48px 40px 80px 56px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.doc-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+.doc-article {
+  flex: 1;
+  min-width: 0;
+  max-width: var(--content-max);
+}
+
+.mini-toc {
+  position: sticky;
+  top: calc(var(--header-height) + 24px);
+  width: 200px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  max-height: calc(100vh - (var(--header-height) + 48px));
+  overflow: auto;
+}
+
+.mini-toc-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 14px;
+  border-left: 1px solid var(--border);
+}
+
+.mini-toc-link {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  text-decoration: none;
+  line-height: 1.4;
+  padding: 2px 0;
+  transition: color 0.15s ease;
+}
+
+.mini-toc-link:hover {
+  color: var(--text-secondary);
+}
+
+.mini-toc-link.active {
+  color: var(--text-primary);
+}
+
+.mini-toc-link.depth-3 {
+  padding-left: 12px;
+  font-size: 12px;
+  opacity: 0.9;
 }
 
 /* ── Hero ── */
@@ -410,6 +459,15 @@ body {
   margin: 0;
 }
 
+.code-block-wrapper.wrapped pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.code-block-wrapper.wrapped code {
+  white-space: pre-wrap;
+}
+
 .code-block-wrapper code {
   font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
@@ -448,8 +506,6 @@ body {
   border: 1px solid rgba(251,191,36,0.2);
   color: #fde68a;
 }
-
-.callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
 
 /* ── Summary table ── */
 .summary-table-wrap {
@@ -511,11 +567,6 @@ body {
   gap: 14px;
 }
 
-.prereq-icon {
-  font-size: 22px;
-  margin-top: 1px;
-}
-
 .prereq-title {
   font-size: 15px;
   font-weight: 600;
@@ -542,3 +593,41 @@ pre code.hljs {
 .hljs-attr { color: #80cbc4; }
 .hljs-literal { color: #ff5370; }
 .hljs-title { color: #82aaff; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .mini-toc {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .app-shell {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .topbar {
+    padding: 0 20px;
+  }
+
+  .page-body {
+    padding: 32px 20px 64px;
+    max-width: 100%;
+  }
+
+  .page-title {
+    font-size: 30px;
+  }
+}
