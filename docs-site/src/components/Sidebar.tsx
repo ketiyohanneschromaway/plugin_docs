@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 const nav: Array<{
   label: string;
@@ -28,16 +29,40 @@ const nav: Array<{
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <aside className="sidebar">
-      <div className="sidebar-logo">
-        <div className="logo-icon">🛡️</div>
-        <div>
-          <div className="logo-text">AI Guardian</div>
-          <div className="logo-sub">Plugin Docs</div>
+    <>
+      {/* Mobile top bar */}
+      <div className="mobile-topbar">
+        <div className="mobile-logo">
+          <div className="logo-icon">🛡️</div>
+          <div className="logo-text">Agentic SPM</div>
         </div>
+        <button
+          className="hamburger"
+          aria-label="Toggle menu"
+          onClick={() => setMobileOpen((v) => !v)}
+        >
+          <span className={`ham-line ${mobileOpen ? 'open' : ''}`} />
+          <span className={`ham-line ${mobileOpen ? 'open' : ''}`} />
+          <span className={`ham-line ${mobileOpen ? 'open' : ''}`} />
+        </button>
       </div>
+
+      {/* Overlay */}
+      {mobileOpen && (
+        <div className="sidebar-overlay" onClick={() => setMobileOpen(false)} />
+      )}
+
+      <aside className={`sidebar ${mobileOpen ? 'sidebar-open' : ''}`}>
+        <div className="sidebar-logo">
+          <div className="logo-icon">🛡️</div>
+          <div>
+            <div className="logo-text">Agentic SPM</div>
+            <div className="logo-sub">Plugin Docs</div>
+          </div>
+        </div>
 
       {nav.map((section) => (
         <div key={section.label} className="sidebar-section">

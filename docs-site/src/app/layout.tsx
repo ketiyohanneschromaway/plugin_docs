@@ -4,8 +4,8 @@ import 'highlight.js/styles/github-dark.css';
 import Sidebar from '@/components/Sidebar';
 
 export const metadata: Metadata = {
-  title: 'AI Guardian Plugin — Docs',
-  description: 'Installation and configuration guide for the AI Guardian OpenClaw plugin by Chromia.',
+  title: 'Agentic SPM — Docs',
+  description: 'Installation and configuration guide for the Agentic SPM OpenClaw plugin by Chromia.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
