@@ -68,7 +68,7 @@ export default function HomePage() {
             >
               Get Started →
             </Link>
-            <a
+            {/* <a
               href="https://github.com/chrguard/ai-guardian-plugin"
               target="_blank"
               rel="noopener noreferrer"
@@ -88,7 +88,7 @@ export default function HomePage() {
               }}
             >
               View on npm
-            </a>
+            </a> */}
           </div>
         </div>
 
