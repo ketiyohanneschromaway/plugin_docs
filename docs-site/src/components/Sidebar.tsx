@@ -20,7 +20,7 @@ const nav: Array<{
       items: [
         { href: '/install#prerequisites', label: 'Prerequisites' },
         { href: '/install#step-1-generate-a-secp256k1-keypair', label: 'Keypair Generation' },
-        { href: '/install#31-enable-plugins', label: 'Configuration' },
+        { href: '/install#14-enable-plugins', label: 'Configuration' },
         { href: '/install#summary', label: 'Summary' },
       ],
     },
