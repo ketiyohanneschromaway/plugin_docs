@@ -1,4 +1,4 @@
-# AI Guardian Plugin — Installation Guide
+# Agentic SPM Plugin — Installation Guide
 
 ## Prerequisites
 
@@ -50,7 +50,7 @@ pubkey=YOUR_PUBLIC_KEY_HEX
 
 ## Step 2: Install the Plugin
 
-Run the following command to install the AI Guardian plugin via OpenClaw:
+Run the following command to install the Agentic SPM via OpenClaw:
 
 ```bash
 openclaw plugins install @chrguard/ai-guardian-plugin
