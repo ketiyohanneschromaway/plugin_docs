@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ExternalLink } from 'lucide-react';
 
 const features = [
   {
@@ -32,6 +33,27 @@ export default function HomePage() {
         </div>
         <div className="topbar-right">
           <span className="version-chip">v0.1.3</span>
+          <a
+            href="https://ai-inference.netlify.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              background: 'rgba(108,99,255,0.12)',
+              color: '#9d98ff',
+              fontWeight: 600,
+              fontSize: 12,
+              padding: '5px 13px',
+              borderRadius: 6,
+              textDecoration: 'none',
+              border: '1px solid rgba(108,99,255,0.25)',
+            }}
+          >
+            <ExternalLink size={12} />
+            Dashboard
+          </a>
         </div>
       </div>
 
@@ -68,27 +90,27 @@ export default function HomePage() {
             >
               Get Started →
             </Link>
-            {/* <a
-              href="https://github.com/chrguard/ai-guardian-plugin"
+            <a
+              href="https://ai-inference.netlify.app/"
               target="_blank"
               rel="noopener noreferrer"
-              id="github-link"
+              id="dashboard-btn"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 8,
-                background: 'var(--bg-elevated)',
-                color: 'var(--text-secondary)',
+                background: 'rgba(0,212,255,0.08)',
+                color: '#00d4ff',
                 fontWeight: 500,
                 fontSize: 14,
                 padding: '10px 22px',
                 borderRadius: 8,
                 textDecoration: 'none',
-                border: '1px solid var(--border-bright)',
+                border: '1px solid rgba(0,212,255,0.22)',
               }}
             >
-              View on npm
-            </a> */}
+              Open Dashboard <ExternalLink size={14} strokeWidth={2} />
+            </a>
           </div>
         </div>
 
@@ -172,32 +194,53 @@ export default function HomePage() {
         }}>
           <div>
             <div style={{ fontSize: 17, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 6 }}>
-              Ready to install?
+              Ready to get started?
             </div>
             <div style={{ fontSize: 14, color: 'var(--text-secondary)' }}>
-              Follow the step-by-step installation guide to get the plugin running.
+              Open the dashboard to see it live, or follow the step-by-step installation guide.
             </div>
           </div>
-          <Link
-            href="/install"
-            id="install-cta-btn"
-            style={{
-              flexShrink: 0,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              background: 'rgba(108,99,255,0.15)',
-              color: '#9d98ff',
-              fontWeight: 600,
-              fontSize: 14,
-              padding: '10px 22px',
-              borderRadius: 8,
-              textDecoration: 'none',
-              border: '1px solid rgba(108,99,255,0.3)',
-            }}
-          >
-            Installation Guide →
-          </Link>
+          <div style={{ display: 'flex', gap: 10, flexShrink: 0, flexWrap: 'wrap' }}>
+            <a
+              href="https://ai-inference.netlify.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                background: 'rgba(0,212,255,0.12)',
+                color: '#00d4ff',
+                fontWeight: 600,
+                fontSize: 14,
+                padding: '10px 22px',
+                borderRadius: 8,
+                textDecoration: 'none',
+                border: '1px solid rgba(0,212,255,0.25)',
+              }}
+            >
+              Open Dashboard <ExternalLink size={14} strokeWidth={2} />
+            </a>
+            <Link
+              href="/install"
+              id="install-cta-btn"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                background: 'rgba(108,99,255,0.15)',
+                color: '#9d98ff',
+                fontWeight: 600,
+                fontSize: 14,
+                padding: '10px 22px',
+                borderRadius: 8,
+                textDecoration: 'none',
+                border: '1px solid rgba(108,99,255,0.3)',
+              }}
+            >
+              Installation Guide →
+            </Link>
+          </div>
         </div>
       </div>
     </>
