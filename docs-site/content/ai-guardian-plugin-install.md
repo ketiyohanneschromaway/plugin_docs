@@ -48,8 +48,6 @@ pubkey=YOUR_PUBLIC_KEY_HEX
 
 ---
 
-## Step 2: Install the Plugin
-
 Run the following command to install the Agentic SPM via OpenClaw:
 
 ```bash
@@ -57,8 +55,6 @@ openclaw plugins install @chrguard/ai-guardian-plugin
 ```
 
 ---
-
-## Step 3: Configure `openclaw.json`
 
 Once the plugin is installed, open your `openclaw.json` file. This is typically located in your OpenClaw directory (e.g., `~/.openclaw/openclaw.json`).
 
