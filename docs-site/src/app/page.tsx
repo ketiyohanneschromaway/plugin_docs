@@ -39,9 +39,9 @@ export default function HomePage() {
         {/* Hero */}
         <div className="page-hero">
           <div className="hero-badge">
-            <span>🛡️</span> Chromia Guardian
+            <span>🤖</span> Chromia Agentic
           </div>
-          <h1 className="page-title">AI Guardian<br />Plugin for OpenClaw</h1>
+          <h1 className="page-title">Agentic SPM<br />Plugin for OpenClaw</h1>
           <p className="page-description">
             A blockchain-enforced safety layer for your AI agent. Every action your agent takes is
             judged on the Chromia network before execution — giving you trustless, on-chain AI governance.
@@ -114,7 +114,7 @@ export default function HomePage() {
           }}>
             <span style={{ color: '#c792ea' }}>Agent</span>
             <span style={{ color: 'var(--text-muted)' }}> → </span>
-            <span style={{ color: '#80cbc4' }}>ai-guardian-plugin</span>
+            <span style={{ color: '#80cbc4' }}>agentic-spm-plugin</span>
             <span style={{ color: 'var(--text-muted)' }}> → </span>
             <span style={{ color: '#c3e88d' }}>Chromia Testnet</span>
             <span style={{ color: 'var(--text-muted)' }}> → </span>

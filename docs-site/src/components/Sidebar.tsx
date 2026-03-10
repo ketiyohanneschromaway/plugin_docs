@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 const nav = [
   {
@@ -14,44 +15,70 @@ const nav = [
   {
     label: 'Reference',
     items: [
-      { href: '/install#step-1', icon: '🔑', label: 'Keypair Generation' },
-      { href: '/install#step-2', icon: '📦', label: 'Plugin Install' },
-      { href: '/install#step-3', icon: '⚙️', label: 'Configuration' },
+      { href: '/install#step-1-generate-a-secp256k1-keypair', icon: '🔑', label: 'Keypair Generation' },
+      { href: '/install#step-2-install-the-plugin', icon: '📦', label: 'Plugin Install' },
+      { href: '/install#step-3-configure-openclawjson', icon: '⚙️', label: 'Configuration' },
     ],
   },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <aside className="sidebar">
-      <div className="sidebar-logo">
-        <div className="logo-icon">🛡️</div>
-        <div>
-          <div className="logo-text">AI Guardian</div>
-          <div className="logo-sub">Plugin Docs</div>
+    <>
+      {/* Mobile top bar */}
+      <div className="mobile-topbar">
+        <div className="mobile-logo">
+          <div className="logo-icon">🛡️</div>
+          <div className="logo-text">Agentic SPM</div>
         </div>
+        <button
+          className="hamburger"
+          aria-label="Toggle menu"
+          onClick={() => setMobileOpen((v) => !v)}
+        >
+          <span className={`ham-line ${mobileOpen ? 'open' : ''}`} />
+          <span className={`ham-line ${mobileOpen ? 'open' : ''}`} />
+          <span className={`ham-line ${mobileOpen ? 'open' : ''}`} />
+        </button>
       </div>
 
-      {nav.map((section) => (
-        <div key={section.label} className="sidebar-section">
-          <div className="sidebar-section-label">{section.label}</div>
-          <nav className="sidebar-nav">
-            {section.items.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={pathname === item.href ? 'active' : ''}
-              >
-                <span className="nav-icon">{item.icon}</span>
-                {item.label}
-                {item.badge && <span className="sidebar-badge">{item.badge}</span>}
-              </Link>
-            ))}
-          </nav>
+      {/* Overlay */}
+      {mobileOpen && (
+        <div className="sidebar-overlay" onClick={() => setMobileOpen(false)} />
+      )}
+
+      <aside className={`sidebar ${mobileOpen ? 'sidebar-open' : ''}`}>
+        <div className="sidebar-logo">
+          <div className="logo-icon">🛡️</div>
+          <div>
+            <div className="logo-text">Agentic SPM</div>
+            <div className="logo-sub">Plugin Docs</div>
+          </div>
         </div>
-      ))}
-    </aside>
+
+        {nav.map((section) => (
+          <div key={section.label} className="sidebar-section">
+            <div className="sidebar-section-label">{section.label}</div>
+            <nav className="sidebar-nav">
+              {section.items.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={pathname === item.href ? 'active' : ''}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  <span className="nav-icon">{item.icon}</span>
+                  {item.label}
+                  {item.badge && <span className="sidebar-badge">{item.badge}</span>}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        ))}
+      </aside>
+    </>
   );
 }
