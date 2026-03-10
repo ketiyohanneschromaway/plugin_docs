@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { LayoutDashboard, ExternalLink } from 'lucide-react';
 
 const nav: Array<{
   label: string;
@@ -80,6 +81,19 @@ export default function Sidebar() {
             </nav>
           </div>
         ))}
+
+        <div className="sidebar-dashboard-cta">
+          <a
+            href="https://ai-inference.netlify.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sidebar-dashboard-btn"
+          >
+            <LayoutDashboard size={14} style={{ flexShrink: 0 }} />
+            Open Dashboard
+            <ExternalLink size={11} style={{ flexShrink: 0, opacity: 0.6 }} />
+          </a>
+        </div>
       </aside>
     </>
   );
