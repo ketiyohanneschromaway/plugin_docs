@@ -51,7 +51,7 @@ export default function MiniToc({ content }: { content: string }) {
           .sort((a, b) => (a.boundingClientRect.top ?? 0) - (b.boundingClientRect.top ?? 0));
         if (visible[0]?.target?.id) setActiveId(visible[0].target.id);
       },
-      { root: null, rootMargin: '-96px 0px -70% 0px', threshold: [0.1, 1] }
+      { root: null, rootMargin: '-88px 0px -65% 0px', threshold: [0.1, 1] }
     );
 
     headings.forEach((h) => obs.observe(h));
@@ -61,7 +61,8 @@ export default function MiniToc({ content }: { content: string }) {
   if (!items.length) return null;
 
   return (
-    <aside className="mini-toc" aria-label="Page navigation">
+    <aside className="mini-toc" aria-label="On this page">
+      <div className="mini-toc-heading">On this page</div>
       <nav className="mini-toc-nav">
         {items.map((item) => (
           <a
@@ -71,7 +72,9 @@ export default function MiniToc({ content }: { content: string }) {
               'mini-toc-link',
               item.depth === 3 ? 'depth-3' : '',
               activeId === item.id ? 'active' : '',
-            ].join(' ').trim()}
+            ]
+              .join(' ')
+              .trim()}
           >
             {item.title}
           </a>
@@ -80,4 +83,3 @@ export default function MiniToc({ content }: { content: string }) {
     </aside>
   );
 }
-
