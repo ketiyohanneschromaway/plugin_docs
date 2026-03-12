@@ -2,30 +2,40 @@
 
 ## Prerequisites
 
-Before installing the plugin, you need a **secp256k1 keypair**. This keypair is used to authenticate your client with the Guardian AI API.
+Before you install, make sure you have:
+
+- **Node.js** v18 or later installed (`node --version` to check)
+- **OpenClaw CLI** installed and accessible in your terminal
+- A terminal with access to your home directory
+
+The plugin uses a **secp256k1 keypair** to authenticate your client with the Guardian AI API. You'll generate this in Step 1.
 
 ---
 
 ## Step 1: Generate a secp256k1 Keypair
 
-If you already have a keypair saved at `~/.config/ai-guardian/guard-client-key`, skip to [Step 2](#step-2-install-the-plugin).
+> **Skip this step** if you already have a keypair saved at `~/.config/ai-guardian/guard-client-key`.
+
+Your keypair is a private/public key pair used to sign requests to the Chromia blockchain. Think of the private key as your password — keep it secret.
 
 ### 1.1 Generate the keypair
 
-Run the following command in your terminal to generate a secp256k1 private/public key pair:
+Run this command in your terminal. It uses Node's built-in `crypto` module — no extra dependencies needed:
 
 ```bash
 node -e "const crypto=require('crypto');const k=crypto.randomBytes(32).toString('hex');const{createECDH}=crypto;const ec=createECDH('secp256k1');ec.setPrivateKey(k,'hex');console.log('#Keypair generated using secp256k1');console.log('#'+new Date().toString());console.log('privkey='+k);console.log('pubkey='+ec.getPublicKey('hex','compressed'))"
 ```
 
-You should see output similar to:
+You'll see output like this:
 
 ```
 #Keypair generated using secp256k1
-#<Day> <Month> <Date> <Year> <Time> <Timezone>
+#Thu Jan 01 2026 12:00:00 GMT+0000 (UTC)
 privkey=ccce16227c7c2891faaee460f4a08bddfc59bd58c48d2cab59b7cac11dfc6807
 pubkey=02dfcbcd04fb1df9941f86b7f026fdec8fbfaabc2808c95f92ef8f92035536eba8
 ```
+
+> **Important:** Copy and save both keys immediately. The private key cannot be recovered if lost.
 
 ### 1.2 Create the config directory
 
@@ -35,7 +45,7 @@ mkdir -p ~/.config/ai-guardian
 
 ### 1.3 Save the keypair to a file
 
-Create the file `~/.config/ai-guardian/guard-client-key` with the following format:
+Create the file `~/.config/ai-guardian/guard-client-key` with the exact format below. **Do not use JSON** — the plugin expects a plain `key=value` format.
 
 ```
 #Keypair generated using secp256k1
@@ -44,21 +54,27 @@ privkey=YOUR_PRIVATE_KEY_HEX
 pubkey=YOUR_PUBLIC_KEY_HEX
 ```
 
-> **Important:** Replace `YOUR_PRIVATE_KEY_HEX` and `YOUR_PUBLIC_KEY_HEX` with the values generated in Step 1.1. The file must **not** be in JSON format — use the plain key=value format shown above.
+Replace `YOUR_PRIVATE_KEY_HEX` and `YOUR_PUBLIC_KEY_HEX` with your values from Step 1.1.
 
 ---
 
-Run the following command to install the Agentic SPM via OpenClaw:
+## Step 2: Install the Plugin
+
+Run the following command to install the Agentic SPM via the OpenClaw CLI:
 
 ```bash
 openclaw plugins install @chrguard/ai-guardian-plugin
 ```
 
+This command downloads the plugin from npm and places it in `~/.openclaw/extensions/ai-guardian-plugin`. The `openclaw.json` file will be partially updated automatically, but you still need to configure it manually as described in Step 3.
+
 ---
 
-Once the plugin is installed, open your `openclaw.json` file. This is typically located in your OpenClaw directory (e.g., `~/.openclaw/openclaw.json`).
+## Step 3: Configure openclaw.json
 
-Here is the **complete target state** of `openclaw.json` for everything this guide touches — use this as your reference as you work through the sub-steps below:
+Open your `openclaw.json` file — typically located at `~/.openclaw/openclaw.json`.
+
+Below is the **complete target state** of the plugin-related sections. Use this as your reference:
 
 ```json
 {
@@ -114,11 +130,11 @@ Here is the **complete target state** of `openclaw.json` for everything this gui
 }
 ```
 
-> `"...": "..."` represents existing fields in your file that you should leave untouched. Replace `<your-username>` with your actual macOS username.
+> `"...": "..."` represents **existing fields** in your file — leave them as-is. Replace `<your-username>` with your actual macOS username.
 
----
+Now apply each of these four sub-steps to get there:
 
-### 1.4 Enable plugins
+### 3.1 Enable plugins
 
 Make sure `plugins.enabled` is set to `true`:
 
@@ -129,48 +145,35 @@ Make sure `plugins.enabled` is set to `true`:
 }
 ```
 
-### 1.5 Verify the install entry
-
-Check that `plugins.installs` contains an entry for `ai-guardian-plugin`. It should have been added automatically by the install command:
-
-```json
-"installs": {
-    "ai-guardian-plugin": {
-        "source": "npm",
-        "spec": "@chrguard/ai-guardian-plugin",
-        "installPath": "/Users/<your-username>/.openclaw/extensions/ai-guardian-plugin",
-        ...
-    }
-}
-```
-
-### 1.6 Add to the allow list
+### 3.2 Add to the allow list
 
 In `plugins.allow`, add `"ai-guardian-plugin"`:
 
 ```json
 "allow": [
+    "...",
     "ai-guardian-plugin"
 ]
 ```
 
-### 1.7 Register the load path
+### 3.3 Register the load path
 
-Copy the value of `plugins.installs.ai-guardian-plugin.installPath` and add it to `plugins.load.paths`:
+Copy the `installPath` value from `plugins.installs.ai-guardian-plugin` and add it to `plugins.load.paths`:
 
 ```json
 "load": {
     "paths": [
+        "...",
         "/Users/<your-username>/.openclaw/extensions/ai-guardian-plugin"
     ]
 }
 ```
 
-> The path must match exactly what is in `installPath`.
+> The path must **match exactly** what is in `installPath` — including the username.
 
-### 1.8 Add the plugin entry
+### 3.4 Add the plugin entry
 
-Under `plugins.entries`, add the following configuration block:
+Under `plugins.entries`, add the full configuration block:
 
 ```json
 "entries": {
@@ -200,28 +203,31 @@ Under `plugins.entries`, add the following configuration block:
 }
 ```
 
-> The `chromiaSecretPath` points to the keypair file you created in Step 1. The `~` expands to your home directory automatically on macOS.
+> The `chromiaSecretPath` points to the keypair file you created in Step 1. The `~` automatically expands to your home directory on macOS.
 
-### 1.9 Restart the OpenClaw Gateway
+---
 
-Once all changes are saved, restart the OpenClaw gateway to apply the new plugin configuration:
+## Step 4: Restart the Gateway
+
+Once all changes are saved, restart the OpenClaw gateway to load the new plugin configuration:
 
 ```bash
 openclaw gateway restart
 ```
 
+You should see a confirmation message that the gateway has restarted and the plugin is active.
+
 ---
 
 ## Summary
 
-After completing all steps, your `openclaw.json` should reflect:
+After completing all steps, your setup should reflect the following:
 
-| Field | Value |
+| Field | Expected Value |
 |---|---|
 | `plugins.enabled` | `true` |
 | `plugins.allow` | includes `"ai-guardian-plugin"` |
-| `plugins.load.paths` | includes the `installPath` from `plugins.installs.ai-guardian-plugin` |
+| `plugins.load.paths` | includes the `installPath` from `plugins.installs` |
 | `plugins.entries.ai-guardian-plugin` | full config block as shown above |
 | `chromiaSecretPath` | `~/.config/ai-guardian/guard-client-key` |
-
-
+| `enforceDecision` | `true` (enables actual blocking on the blockchain verdict) |
