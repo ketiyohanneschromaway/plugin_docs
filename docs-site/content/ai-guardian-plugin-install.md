@@ -18,43 +18,37 @@ The plugin uses a **secp256k1 keypair** to authenticate your client with the Gua
 
 Your keypair is a private/public key pair used to sign requests to the Chromia blockchain. Think of the private key as your password — keep it secret.
 
-### 1.1 Generate the keypair
-
-Run this command in your terminal. It uses Node's built-in `crypto` module — no extra dependencies needed:
+Run this command in your terminal — it generates the keypair and saves it to the right place automatically:
 
 ```bash
-node -e "const crypto=require('crypto');const k=crypto.randomBytes(32).toString('hex');const{createECDH}=crypto;const ec=createECDH('secp256k1');ec.setPrivateKey(k,'hex');console.log('#Keypair generated using secp256k1');console.log('#'+new Date().toString());console.log('privkey='+k);console.log('pubkey='+ec.getPublicKey('hex','compressed'))"
+node -e "
+const crypto = require('crypto');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+
+const privkey = crypto.randomBytes(32).toString('hex');
+const ec = crypto.createECDH('secp256k1');
+ec.setPrivateKey(privkey, 'hex');
+const pubkey = ec.getPublicKey('hex', 'compressed');
+
+const content = [
+  '#Keypair generated using secp256k1',
+  '#' + new Date().toString(),
+  'privkey=' + privkey,
+  'pubkey=' + pubkey,
+].join('\n') + '\n';
+
+const dir = path.join(os.homedir(), '.config', 'ai-guardian');
+fs.mkdirSync(dir, { recursive: true });
+fs.writeFileSync(path.join(dir, 'guard-client-key'), content, { mode: 0o600 });
+
+process.stdout.write('pubkey=' + pubkey + '\n');
+"
 ```
 
-You'll see output like this:
+> **Important:** The private key is written to `~/.config/ai-guardian/guard-client-key` and is never printed.
 
-```
-#Keypair generated using secp256k1
-#Thu Jan 01 2026 12:00:00 GMT+0000 (UTC)
-privkey=ccce16227c7c2891faaee460f4a08bddfc59bd58c48d2cab59b7cac11dfc6807
-pubkey=02dfcbcd04fb1df9941f86b7f026fdec8fbfaabc2808c95f92ef8f92035536eba8
-```
-
-> **Important:** Copy and save both keys immediately. The private key cannot be recovered if lost.
-
-### 1.2 Create the config directory
-
-```bash
-mkdir -p ~/.config/ai-guardian
-```
-
-### 1.3 Save the keypair to a file
-
-Create the file `~/.config/ai-guardian/guard-client-key` with the exact format below. **Do not use JSON** — the plugin expects a plain `key=value` format.
-
-```
-#Keypair generated using secp256k1
-#<Day> <Month> <Date> <Year> <Time> <Timezone>
-privkey=YOUR_PRIVATE_KEY_HEX
-pubkey=YOUR_PUBLIC_KEY_HEX
-```
-
-Replace `YOUR_PRIVATE_KEY_HEX` and `YOUR_PUBLIC_KEY_HEX` with your values from Step 1.1.
 
 ---
 
@@ -72,71 +66,11 @@ This command downloads the plugin from npm and places it in `~/.openclaw/extensi
 
 ## Step 3: Configure openclaw.json
 
-Open your `openclaw.json` file — typically located at `~/.openclaw/openclaw.json`.
-
-Below is the **complete target state** of the plugin-related sections. Use this as your reference:
-
-```json
-{
-    "...": "...",
-
-    "plugins": {
-        "enabled": true,
-        "allow": [
-            "...",
-            "ai-guardian-plugin"
-        ],
-        "load": {
-            "paths": [
-                "...",
-                "/Users/<your-username>/.openclaw/extensions/ai-guardian-plugin"
-            ]
-        },
-        "entries": {
-            "...": "...",
-            "ai-guardian-plugin": {
-                "enabled": true,
-                "config": {
-                    "enabled": true,
-                    "enforceDecision": true,
-                    "chromiaBrid": "5D007915E9DE53AA29784820E8F41CE65A4436703E23B8AF49B83C7FB4FDB048",
-                    "chromiaNodes": [
-                        "https://node6.testnet.chromia.com:7740",
-                        "https://node7.testnet.chromia.com:7740",
-                        "https://node8.testnet.chromia.com:7740"
-                    ],
-                    "chromiaJudgeOperation": "judge_action",
-                    "chromiaStatusQuery": "get_judgment_status",
-                    "chromiaFtAuth": false,
-                    "chromiaTxAwait": true,
-                    "timeoutMs": 15000,
-                    "chromiaTxTimeoutMs": 25000,
-                    "chromiaQueryTimeoutMs": 8000,
-                    "chromiaPollTimeoutMs": 30000,
-                    "chromiaPollIntervalMs": 1000,
-                    "chromiaSecretPath": "~/.config/ai-guardian/guard-client-key"
-                }
-            }
-        },
-        "installs": {
-            "ai-guardian-plugin": {
-                "source": "npm",
-                "spec": "@chrguard/ai-guardian-plugin",
-                "installPath": "/Users/<your-username>/.openclaw/extensions/ai-guardian-plugin",
-                "...": "..."
-            }
-        }
-    }
-}
-```
-
-> `"...": "..."` represents **existing fields** in your file — leave them as-is. Replace `<your-username>` with your actual macOS username.
-
-Now apply each of these four sub-steps to get there:
+Open your `openclaw.json` file — typically located at `~/.openclaw/openclaw.json`. Apply each of the following sub-steps:
 
 ### 3.1 Enable plugins
 
-Make sure `plugins.enabled` is set to `true`:
+Make sure the top-level `plugins` block is enabled:
 
 ```json
 "plugins": {
@@ -145,9 +79,11 @@ Make sure `plugins.enabled` is set to `true`:
 }
 ```
 
+> **Note:** This unlocks the entire plugin system inside the gateway.
+
 ### 3.2 Add to the allow list
 
-In `plugins.allow`, add `"ai-guardian-plugin"`:
+In `plugins.allow`, add `"ai-guardian-plugin"` to the array:
 
 ```json
 "allow": [
@@ -156,9 +92,11 @@ In `plugins.allow`, add `"ai-guardian-plugin"`:
 ]
 ```
 
+> **Security:** This explicitly permits the Guardian plugin to run.
+
 ### 3.3 Register the load path
 
-Copy the `installPath` value from `plugins.installs.ai-guardian-plugin` and add it to `plugins.load.paths`:
+Find the `installPath` from where you installed it, and add it to `plugins.load.paths`:
 
 ```json
 "load": {
@@ -169,11 +107,11 @@ Copy the `installPath` value from `plugins.installs.ai-guardian-plugin` and add 
 }
 ```
 
-> The path must **match exactly** what is in `installPath` — including the username.
+> **Important:** The path must match your system exactly — replace `<your-username>` with your actual macOS username.
 
 ### 3.4 Add the plugin entry
 
-Under `plugins.entries`, add the full configuration block:
+Under `plugins.entries`, add the full Guardian configuration block:
 
 ```json
 "entries": {
@@ -203,7 +141,7 @@ Under `plugins.entries`, add the full configuration block:
 }
 ```
 
-> The `chromiaSecretPath` points to the keypair file you created in Step 1. The `~` automatically expands to your home directory on macOS.
+> **Note:** `chromiaSecretPath` uses `~` to expand to your home directory, pointing to the keypair generated in Step 1.
 
 ---
 
@@ -215,7 +153,7 @@ Once all changes are saved, restart the OpenClaw gateway to load the new plugin 
 openclaw gateway restart
 ```
 
-You should see a confirmation message that the gateway has restarted and the plugin is active.
+> **Success:** You should see a terminal confirmation that the gateway has restarted and the plugin is active.
 
 ---
 
@@ -224,10 +162,10 @@ You should see a confirmation message that the gateway has restarted and the plu
 After completing all steps, your setup should reflect the following:
 
 | Field | Expected Value |
-|---|---|
+| :--- | :--- |
 | `plugins.enabled` | `true` |
 | `plugins.allow` | includes `"ai-guardian-plugin"` |
-| `plugins.load.paths` | includes the `installPath` from `plugins.installs` |
-| `plugins.entries.ai-guardian-plugin` | full config block as shown above |
+| `plugins.load.paths` | includes the `installPath` |
+| `plugins.entries` | contains `ai-guardian-plugin` |
 | `chromiaSecretPath` | `~/.config/ai-guardian/guard-client-key` |
-| `enforceDecision` | `true` (enables actual blocking on the blockchain verdict) |
+| `enforceDecision` | `true` (blockchain actively blocks) |
