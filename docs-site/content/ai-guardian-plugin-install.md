@@ -120,7 +120,7 @@ Under `plugins.entries`, add the full Guardian configuration block:
         "config": {
             "enabled": true,
             "enforceDecision": true,
-            "chromiaBrid": "5D007915E9DE53AA29784820E8F41CE65A4436703E23B8AF49B83C7FB4FDB048",
+            "chromiaBrid": "6D43E305C175BC1F625CAF035A7725D0C48F503DE27D6EC453D7C07F02D0696C",
             "chromiaNodes": [
                 "https://node6.testnet.chromia.com:7740",
                 "https://node7.testnet.chromia.com:7740",
